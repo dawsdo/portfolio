@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# UI/UX Pro Max skill (reinstall with: uipro init --ai claude)
+.claude/skills/
+# Python bytecode
+__pycache__/
+*.pyc
