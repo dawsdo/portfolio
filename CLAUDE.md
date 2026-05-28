@@ -8,7 +8,7 @@
 
 \- Stack-strong across systems (C++, Go, OCaml, Assembly), full-stack web (Next.js, React, Flask, PostgreSQL, Prisma), AWS (EC2/S3/Lambda/RDS/SES), and applied ML/CV (YOLOv8, OpenCV, Scikit-learn).
 
-\- Personality of the site: precise, restrained, systems-y. Not warm or playful. Closer to Linear/Vercel/Warp than Stripe/Notion/Airbnb.
+- Personality of the site: visually restrained and precise (Linear/Vercel/Warp territory), but the WRITING voice is warm and curious. This contrast is intentional — austere structure, human words. Dawson is a curious "lifetime student" who likes puzzles, sports, working out, and finding hole-in-the-wall food spots. The visuals shouldn't be cold, the copy shouldn't be corporate.
 
 
 
@@ -80,7 +80,8 @@
 
 3\. \*\*Selected work\*\* — Three project case study cards: Collision Analysis Drone, Seizure Diary Platform, AWS Cloud File Distribution App.
 
-4\. \*\*Stack\*\* — Horizontal infinite-scroll marquee of tech logos. Inspired by warp.dev's partner ribbon.
+4. **How I build** — Animated node-graph showpiece (inspired by VoltAgent's interactive graph). Inputs (a problem / an idea / a dataset) flow into a central hub (Dawson) and out to outputs (web apps, ML systems, cloud infrastructure), with capability chips along the bottom (Python, Go, React, AWS, Computer Vision). Light pulses travel the wires. Build this as a REUSABLE component — the same graph gets reused on the drone project page with real architecture nodes (DJI Tello → Flask API → YOLOv8 → React dashboard).
+5. **Stack** — Horizontal dual-row infinite-scroll marquee of tech logos on a dotted dark background, rows scrolling opposite directions, edges faded. Inspired by VoltAgent's "used and tested by" ribbon but with Dawson's tech stack instead of company logos.
 
 5\. \*\*Contact\*\* — Email, GitHub, LinkedIn.
 
