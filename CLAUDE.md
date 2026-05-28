@@ -73,17 +73,13 @@
 
 
 \## Sections on the homepage
-
-1\. \*\*Hero\*\* — Name, one-line description, two CTAs. Subtle interactive accent (TBD — leaning toward a low-key pulse/beat indicator).
-
-2\. \*\*About\*\* — 3–4 sentences. Possibly a small photo.
-
-3\. \*\*Selected work\*\* — Three project case study cards: Collision Analysis Drone, Seizure Diary Platform, AWS Cloud File Distribution App.
-
-4. **How I build** — Animated node-graph showpiece (inspired by VoltAgent's interactive graph). Inputs (a problem / an idea / a dataset) flow into a central hub (Dawson) and out to outputs (web apps, ML systems, cloud infrastructure), with capability chips along the bottom (Python, Go, React, AWS, Computer Vision). Light pulses travel the wires. Build this as a REUSABLE component — the same graph gets reused on the drone project page with real architecture nodes (DJI Tello → Flask API → YOLOv8 → React dashboard).
-5. **Stack** — Horizontal dual-row infinite-scroll marquee of tech logos on a dotted dark background, rows scrolling opposite directions, edges faded. Inspired by VoltAgent's "used and tested by" ribbon but with Dawson's tech stack instead of company logos.
-
-5\. \*\*Contact\*\* — Email, GitHub, LinkedIn.
+## Sections on the homepage
+1. Hero — Name, subhead, status line with pulsing "Available for Summer 2026 internships" dot, a live local clock (visitor's timezone), two CTAs. Animated background and a cursor effect to be layered in AFTER the static hero is approved.
+2. About — 3-4 sentences carrying the warm/human voice (curiosity, puzzles, sports, working out, finding hole-in-the-wall food spots). Possibly a small photo.
+3. Selected work — Three project case study cards: Collision Analysis Drone, Seizure Diary Platform, AWS Cloud File Distribution App.
+4. How I build — Animated node-graph showpiece (inspired by VoltAgent's interactive graph). Inputs (a problem / an idea / a dataset) flow into a central hub (Dawson) and out to outputs (web apps, ML systems, cloud infrastructure), with capability chips along the bottom (Python, Go, React, AWS, Computer Vision). Light pulses travel the wires. Build this as a REUSABLE component — the same graph gets reused on the drone project page with real architecture nodes (DJI Tello → Flask API → YOLOv8 → React dashboard).
+5. Stack — Horizontal dual-row infinite-scroll marquee of tech logos on a dotted dark background, rows scrolling opposite directions, edges faded. Inspired by VoltAgent's "used and tested by" ribbon but with Dawson's tech stack instead of company logos.
+6. Contact — Email, GitHub, LinkedIn.
 
 
 
