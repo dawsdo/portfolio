@@ -1,8 +1,40 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+
+const QUOTES = [
+  {
+    text: "What I cannot create, I do not understand.",
+    attribution: "Richard Feynman",
+  },
+  {
+    text: "Simplicity is prerequisite for reliability.",
+    attribution: "Edsger Dijkstra",
+  },
+  {
+    text: "Make it work, make it right, make it fast.",
+    attribution: "Kent Beck",
+  },
+  {
+    text: "If you can't explain it simply, you don't understand it well enough.",
+    attribution: "Albert Einstein",
+  },
+  {
+    text: "The best way to predict the future is to invent it.",
+    attribution: "Alan Kay",
+  },
+  {
+    text: "You can't connect the dots looking forward. You can only connect them looking backwards.",
+    attribution: "Steve Jobs",
+  },
+  {
+    text: "Premature optimization is the root of all evil.",
+    attribution: "Donald Knuth",
+  },
+];
 
 const CONTACTS = [
   {
@@ -24,6 +56,11 @@ const CONTACTS = [
 
 export default function Contact() {
   const prefersReducedMotion = useReducedMotion();
+  const [quoteIndex, setQuoteIndex] = useState(0);
+
+  useEffect(() => {
+    setQuoteIndex(Math.floor(Math.random() * QUOTES.length));
+  }, []);
 
   const initial = prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 };
   const inView = { opacity: 1, y: 0 };
@@ -76,6 +113,19 @@ export default function Contact() {
             </a>
           </motion.div>
         ))}
+      </div>
+
+      <div className="mt-16 lg:mt-20">
+        <p
+          suppressHydrationWarning
+          className="max-w-[62ch] font-mono text-xs italic leading-[1.4] text-ink-tertiary"
+        >
+          &ldquo;{QUOTES[quoteIndex].text}&rdquo; &mdash;{" "}
+          {QUOTES[quoteIndex].attribution}
+        </p>
+        <p className="mt-8 font-mono text-xs text-ink-tertiary">
+          &copy; 2026 Dawson Do. Built in Birmingham, probably learning something new right now.
+        </p>
       </div>
     </section>
   );

@@ -47,6 +47,42 @@ function LocalClock() {
   );
 }
 
+function DayCountdown() {
+  const [remaining, setRemaining] = useState<string | null>(null);
+
+  useEffect(() => {
+    const tick = () => {
+      try {
+        const now = new Date();
+        const midnight = new Date(now);
+        midnight.setHours(24, 0, 0, 0);
+        const diff = midnight.getTime() - now.getTime();
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        setRemaining(
+          `${h} hours, ${m} minutes, ${s} seconds left in the day — use them wisely.`,
+        );
+      } catch {
+        setRemaining("Use today wisely.");
+      }
+    };
+
+    tick();
+    const id = window.setInterval(tick, 1000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return (
+    <p
+      suppressHydrationWarning
+      className="font-mono text-[12px] leading-[1.4] text-ink-tertiary"
+    >
+      {remaining ?? "Loading..."}
+    </p>
+  );
+}
+
 function StatusPill() {
   return (
     <span className="inline-flex items-center gap-2 rounded-full border border-hairline bg-surface-1 px-3 py-1 text-[13px] text-ink-muted">
@@ -93,6 +129,15 @@ export default function Hero() {
         >
           <StatusPill />
           <LocalClock />
+        </motion.div>
+
+        <motion.div
+          initial={initial}
+          animate={animate}
+          transition={t(0.05)}
+          className="mt-2 pl-[29px]"
+        >
+          <DayCountdown />
         </motion.div>
 
         <motion.h1
