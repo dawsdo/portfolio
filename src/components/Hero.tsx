@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
+import Magnetic from "@/components/Magnetic";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -165,12 +166,16 @@ export default function Hero() {
           transition={t(0.15)}
           className="mt-10 flex flex-wrap items-center gap-3"
         >
-          <Button href="#work" variant="primary">
-            View work
-          </Button>
-          <Button href="mailto:dsdoapps@gmail.com" variant="secondary">
-            Get in touch
-          </Button>
+          <Magnetic>
+            <Button href="#work" variant="primary">
+              View work
+            </Button>
+          </Magnetic>
+          <Magnetic>
+            <Button href="mailto:dsdoapps@gmail.com" variant="secondary">
+              Get in touch
+            </Button>
+          </Magnetic>
         </motion.div>
       </div>
     </section>

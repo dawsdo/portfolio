@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import Magnetic from "@/components/Magnetic";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -102,15 +103,17 @@ export default function Contact() {
             <p className="font-mono text-[11px] uppercase tracking-[0.05em] text-ink-tertiary">
               {item.label}
             </p>
-            <a
-              href={item.href}
-              className="mt-1 block text-lg font-medium text-ink transition duration-200 ease-linear-out hover:text-primary"
-              {...(item.href.startsWith("mailto")
-                ? {}
-                : { target: "_blank", rel: "noopener noreferrer" })}
-            >
-              {item.display}
-            </a>
+            <Magnetic>
+              <a
+                href={item.href}
+                className="mt-1 block text-lg font-medium text-ink transition duration-200 ease-linear-out hover:text-primary"
+                {...(item.href.startsWith("mailto")
+                  ? {}
+                  : { target: "_blank", rel: "noopener noreferrer" })}
+              >
+                {item.display}
+              </a>
+            </Magnetic>
           </motion.div>
         ))}
       </div>

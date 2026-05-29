@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import Button from "@/components/Button";
+import Magnetic from "@/components/Magnetic";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -45,9 +45,11 @@ export default function NotFound() {
           transition={t(0.1)}
           className="mt-10"
         >
-          <Button href="/" variant="secondary">
-            Back home
-          </Button>
+          <Magnetic>
+            <Button href="/" variant="secondary">
+              Back home
+            </Button>
+          </Magnetic>
         </motion.div>
       </div>
     </main>
