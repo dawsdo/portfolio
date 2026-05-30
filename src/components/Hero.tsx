@@ -172,7 +172,7 @@ export default function Hero() {
             </Button>
           </Magnetic>
           <Magnetic>
-            <Button href="mailto:dsdoapps@gmail.com" variant="secondary">
+            <Button href="#contact" variant="secondary">
               Get in touch
             </Button>
           </Magnetic>

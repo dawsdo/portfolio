@@ -87,8 +87,8 @@ export default function Stack() {
 
       <div
         className="marquee-bg mt-10 rounded-lg py-12 lg:mt-12"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
+        onPointerEnter={(e) => e.pointerType === "mouse" && setPaused(true)}
+        onPointerLeave={(e) => e.pointerType === "mouse" && setPaused(false)}
       >
         <div className="flex flex-col gap-4">
           <MarqueeRow items={ROW1} direction="ltr" playState={playState} />
