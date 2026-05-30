@@ -87,6 +87,13 @@ body {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-ltr,
+  .animate-marquee-rtl {
+    animation: none;
+  }
+}
+
 /* Marquee keyframes */
 @keyframes marquee-ltr {
   from { transform: translateX(-50%); }

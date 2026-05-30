@@ -54,8 +54,7 @@ export default function Stack() {
   const prefersReducedMotion = useReducedMotion();
   const [paused, setPaused] = useState(false);
 
-  const playState: "running" | "paused" =
-    paused || !!prefersReducedMotion ? "paused" : "running";
+  const playState: "running" | "paused" = paused ? "paused" : "running";
 
   const initial = prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 };
   const inView = { opacity: 1, y: 0 };
