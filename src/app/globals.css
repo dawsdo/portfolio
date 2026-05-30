@@ -115,3 +115,74 @@ body {
   -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
   mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
 }
+
+/* ── Pac-Man Easter egg (Contact copyright line) ──────────────────── */
+
+/* Rotation anchor: both jaws rotate around the circle center (7,7) in the 14×14 SVG */
+.pacman-jaw-top,
+.pacman-jaw-bottom {
+  transform-box: view-box;
+  transform-origin: 7px 7px;
+}
+
+.pacman-jaw-top    { animation: pacman-jaw-top    0.25s ease-in-out infinite; }
+.pacman-jaw-bottom { animation: pacman-jaw-bottom 0.25s ease-in-out infinite; }
+
+.pacman-mover {
+  animation: pacman-travel 7s linear infinite;
+  will-change: transform;
+}
+
+.pacman-dot-1 { animation: pacman-dot-1 7s linear infinite; }
+.pacman-dot-2 { animation: pacman-dot-2 7s linear infinite; }
+.pacman-dot-3 { animation: pacman-dot-3 7s linear infinite; }
+
+/* Travel: enter from off-screen left (-14px), exit off-screen right (110px),
+   pause 3s off-screen right before the next loop snaps back invisibly */
+@keyframes pacman-travel {
+  0%     { transform: translateX(-14px); }
+  57.14% { transform: translateX(110px); }
+  100%   { transform: translateX(110px); }
+}
+
+/* Mouth: 10° opening baked into path geometry; animation opens an additional 20° each jaw */
+@keyframes pacman-jaw-top {
+  0%, 100% { transform: rotate(0deg);  }
+  50%      { transform: rotate(-20deg); }
+}
+
+@keyframes pacman-jaw-bottom {
+  0%, 100% { transform: rotate(0deg); }
+  50%      { transform: rotate(20deg); }
+}
+
+/* Dot timing — Pac-Man starts at x=-14px, mouth (right edge) at x=0.
+   Dots at cx=28, 48, 68. Mouth reaches each when translateX=14, 34, 54.
+   Those land at ~13%, ~22%, ~31% of the 7s cycle. Dots reset at 57–59%
+   while Pac-Man is off-screen right. */
+@keyframes pacman-dot-1 {
+  0%, 13%    { opacity: 0.4; }
+  14.5%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+
+@keyframes pacman-dot-2 {
+  0%, 22%    { opacity: 0.4; }
+  23.5%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+
+@keyframes pacman-dot-3 {
+  0%, 31%    { opacity: 0.4; }
+  32.5%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+
+/* Reduced motion: static Pac-Man (mouth naturally open 10° via path geometry) + 1 dot */
+@media (prefers-reduced-motion: reduce) {
+  .pacman-mover                { animation: none; transform: translateX(0); }
+  .pacman-jaw-top,
+  .pacman-jaw-bottom           { animation: none; }
+  .pacman-dot-1                { animation: none; opacity: 0.4; }
+  .pacman-dot-2, .pacman-dot-3 { display: none; }
+}

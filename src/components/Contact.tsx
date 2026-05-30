@@ -128,6 +128,51 @@ export default function Contact() {
         </p>
         <p className="mt-8 font-mono text-xs text-ink-tertiary">
           &copy; 2026 Dawson Do. Built in Birmingham, probably learning something new right now.
+          <span
+            aria-hidden="true"
+            className="hidden sm:inline-flex items-center align-middle ml-2"
+          >
+            <span
+              className="relative inline-block overflow-hidden"
+              style={{ width: "110px", height: "14px" }}
+            >
+              {/* Dots — fixed layer, Pac-Man renders on top via DOM order */}
+              <svg
+                className="absolute inset-0"
+                viewBox="0 0 110 14"
+                width="110"
+                height="14"
+              >
+                <circle className="pacman-dot-1" cx="28" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+                <circle className="pacman-dot-2" cx="48" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+                <circle className="pacman-dot-3" cx="68" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+              </svg>
+              {/* Pac-Man — travels on top of dots */}
+              <span
+                className="pacman-mover absolute top-0 left-0"
+                style={{ width: "14px", height: "14px" }}
+              >
+                <svg viewBox="0 0 14 14" width="14" height="14">
+                  {/* Top jaw: pie slice from mouth-edge (10° above right) CCW to left.
+                      The 10° baked opening means under reduced-motion (animation: none)
+                      Pac-Man's mouth is naturally slightly open — no extra CSS needed. */}
+                  <g className="pacman-jaw-top">
+                    <path
+                      d="M7,7 L13.89,5.79 A7,7 0 0,0 0,7 Z"
+                      fill="var(--color-primary)"
+                    />
+                    <circle cx="9.5" cy="3.5" r="1" fill="var(--color-canvas)" />
+                  </g>
+                  {/* Bottom jaw: pie slice from mouth-edge (10° below right) CW to left */}
+                  <path
+                    className="pacman-jaw-bottom"
+                    d="M7,7 L13.89,8.21 A7,7 0 0,1 0,7 Z"
+                    fill="var(--color-primary)"
+                  />
+                </svg>
+              </span>
+            </span>
+          </span>
         </p>
       </div>
     </section>
