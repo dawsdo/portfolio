@@ -186,3 +186,107 @@ body {
   .pacman-dot-1                { animation: none; opacity: 0.4; }
   .pacman-dot-2, .pacman-dot-3 { display: none; }
 }
+
+/* ── Pac-Man Mobile (full-width track, Contact section) ────────────── */
+
+/* Reuses .pacman-jaw-top / .pacman-jaw-bottom from the desktop section above */
+
+.pacman-mover-mobile {
+  animation: pacman-travel-mobile 7s linear infinite;
+  will-change: transform;
+}
+
+.pacman-dot-m1  { animation: pacman-dot-m1  7s linear infinite; }
+.pacman-dot-m2  { animation: pacman-dot-m2  7s linear infinite; }
+.pacman-dot-m3  { animation: pacman-dot-m3  7s linear infinite; }
+.pacman-dot-m4  { animation: pacman-dot-m4  7s linear infinite; }
+.pacman-dot-m5  { animation: pacman-dot-m5  7s linear infinite; }
+.pacman-dot-m6  { animation: pacman-dot-m6  7s linear infinite; }
+.pacman-dot-m7  { animation: pacman-dot-m7  7s linear infinite; }
+.pacman-dot-m8  { animation: pacman-dot-m8  7s linear infinite; }
+.pacman-dot-m9  { animation: pacman-dot-m9  7s linear infinite; }
+.pacman-dot-m10 { animation: pacman-dot-m10 7s linear infinite; }
+.pacman-dot-m11 { animation: pacman-dot-m11 7s linear infinite; }
+.pacman-dot-m12 { animation: pacman-dot-m12 7s linear infinite; }
+
+/* Same 4s travel + 3s pause cycle as desktop.
+   500px exit covers all phone widths; overflow-hidden clips at the screen edge. */
+@keyframes pacman-travel-mobile {
+  0%     { transform: translateX(-14px); }
+  57.14% { transform: translateX(500px); }
+  100%   { transform: translateX(500px); }
+}
+
+/* Dot timing: mouth at x=0 initially, dots at cx=30,60,...,360.
+   Mouth reaches dot at cx=D when translateX=D-14; as % of 7s = D/514*57.14 = D*0.1112%.
+   Each dot is 3.3% apart. Fade takes 1.5% (~100ms). Reset at 57–59% off-screen. */
+@keyframes pacman-dot-m1 {
+  0%, 3.3%   { opacity: 0.4; }
+  4.8%, 57%  { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m2 {
+  0%, 6.7%   { opacity: 0.4; }
+  8.2%, 57%  { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m3 {
+  0%, 10%    { opacity: 0.4; }
+  11.5%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m4 {
+  0%, 13.3%  { opacity: 0.4; }
+  14.8%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m5 {
+  0%, 16.7%  { opacity: 0.4; }
+  18.2%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m6 {
+  0%, 20%    { opacity: 0.4; }
+  21.5%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m7 {
+  0%, 23.3%  { opacity: 0.4; }
+  24.8%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m8 {
+  0%, 26.7%  { opacity: 0.4; }
+  28.2%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m9 {
+  0%, 30%    { opacity: 0.4; }
+  31.5%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m10 {
+  0%, 33.4%  { opacity: 0.4; }
+  34.9%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m11 {
+  0%, 36.7%  { opacity: 0.4; }
+  38.2%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+@keyframes pacman-dot-m12 {
+  0%, 40%    { opacity: 0.4; }
+  41.5%, 57% { opacity: 0;   }
+  59%, 100%  { opacity: 0.4; }
+}
+
+/* Reduced motion (mobile): static Pac-Man at left edge + 1 dot */
+@media (prefers-reduced-motion: reduce) {
+  .pacman-mover-mobile { animation: none; transform: translateX(0); }
+  .pacman-dot-m1       { animation: none; opacity: 0.4; }
+  .pacman-dot-m2,  .pacman-dot-m3,  .pacman-dot-m4,
+  .pacman-dot-m5,  .pacman-dot-m6,  .pacman-dot-m7,
+  .pacman-dot-m8,  .pacman-dot-m9,  .pacman-dot-m10,
+  .pacman-dot-m11, .pacman-dot-m12 { display: none; }
+}

@@ -130,7 +130,7 @@ export default function Contact() {
           &copy; 2026 Dawson Do. Built in Birmingham, probably learning something new right now.
           <span
             aria-hidden="true"
-            className="inline-flex items-center align-middle ml-2"
+            className="hidden sm:inline-flex items-center align-middle ml-2"
           >
             <span
               className="relative inline-block overflow-hidden"
@@ -174,6 +174,45 @@ export default function Contact() {
             </span>
           </span>
         </p>
+        {/* Mobile full-width Pac-Man — desktop gets the inline version above.
+            -mx-6 cancels the section's px-6 padding so the track runs edge-to-edge.
+            The 500px SVG coordinate space is clipped by overflow-hidden at the screen edge. */}
+        <div
+          aria-hidden="true"
+          className="block sm:hidden relative mt-4 -mx-6 overflow-hidden"
+          style={{ height: "14px" }}
+        >
+          <svg className="absolute top-0 left-0" width="500" height="14" viewBox="0 0 500 14">
+            <circle className="pacman-dot-m1"  cx="30"  cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m2"  cx="60"  cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m3"  cx="90"  cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m4"  cx="120" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m5"  cx="150" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m6"  cx="180" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m7"  cx="210" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m8"  cx="240" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m9"  cx="270" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m10" cx="300" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m11" cx="330" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+            <circle className="pacman-dot-m12" cx="360" cy="7" r="2" fill="var(--color-primary)" opacity="0.4" />
+          </svg>
+          <span
+            className="pacman-mover-mobile absolute top-0 left-0"
+            style={{ width: "14px", height: "14px" }}
+          >
+            <svg viewBox="0 0 14 14" width="14" height="14">
+              <g className="pacman-jaw-top">
+                <path d="M7,7 L13.89,5.79 A7,7 0 0,0 0,7 Z" fill="var(--color-primary)" />
+                <circle cx="9.5" cy="3.5" r="1" fill="var(--color-canvas)" />
+              </g>
+              <path
+                className="pacman-jaw-bottom"
+                d="M7,7 L13.89,8.21 A7,7 0 0,1 0,7 Z"
+                fill="var(--color-primary)"
+              />
+            </svg>
+          </span>
+        </div>
       </div>
     </section>
   );
