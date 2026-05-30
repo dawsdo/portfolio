@@ -31,6 +31,7 @@ export default function CursorEffects() {
         dotPos.y = e.clientY;
         spotlight.style.opacity = "1";
         dot.style.opacity = "0.4";
+        console.log("[cursor] spotlight zIndex:", spotlight.style.zIndex, "| dot zIndex:", dot.style.zIndex);
       }
     };
 
@@ -89,13 +90,13 @@ export default function CursorEffects() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: "240px",
-          height: "240px",
+          width: "480px",
+          height: "480px",
           pointerEvents: "none",
-          zIndex: 0,
+          zIndex: 10,
           opacity: 0,
           background:
-            "radial-gradient(circle at center, rgba(94, 106, 210, 0.06) 0%, transparent 60%)",
+            "radial-gradient(circle at center, rgba(94, 106, 210, 0.10) 0%, transparent 60%)",
           willChange: "transform",
         }}
       />
