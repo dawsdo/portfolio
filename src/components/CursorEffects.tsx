@@ -90,13 +90,13 @@ export default function CursorEffects() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: "480px",
-          height: "480px",
+          width: "320px",
+          height: "320px",
           pointerEvents: "none",
           zIndex: 10,
           opacity: 0,
           background:
-            "radial-gradient(circle at center, rgba(94, 106, 210, 0.10) 0%, transparent 60%)",
+            "radial-gradient(circle at center, rgba(94, 106, 210, 0.20) 0%, rgba(94, 106, 210, 0.08) 40%, transparent 75%)",
           willChange: "transform",
         }}
       />
