@@ -121,7 +121,7 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0 -z-10"
       />
 
-      <div className="mx-auto flex min-h-[88vh] max-w-[1280px] flex-col justify-center px-6 pb-24 pt-32 sm:px-10 lg:px-16">
+      <div className="mx-auto flex min-h-[88vh] max-w-[1280px] flex-col justify-start pt-20 pb-24 px-6 sm:justify-center sm:pt-32 sm:px-10 lg:px-16">
         <motion.div
           initial={initial}
           animate={animate}

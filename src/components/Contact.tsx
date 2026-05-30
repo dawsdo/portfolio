@@ -130,7 +130,7 @@ export default function Contact() {
           &copy; 2026 Dawson Do. Built in Birmingham, probably learning something new right now.
           <span
             aria-hidden="true"
-            className="hidden sm:inline-flex items-center align-middle ml-2"
+            className="inline-flex items-center align-middle ml-2"
           >
             <span
               className="relative inline-block overflow-hidden"
