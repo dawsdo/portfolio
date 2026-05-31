@@ -4,7 +4,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import Magnetic from "@/components/Magnetic";
-import HeroAurora from "@/components/HeroAurora";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -115,8 +114,7 @@ export default function Hero() {
 
   return (
     <section className="relative isolate overflow-hidden">
-      <HeroAurora />
-      <div className="relative z-10 mx-auto flex min-h-[88vh] max-w-[1280px] flex-col justify-start pt-16 pb-24 px-6 sm:justify-center sm:pt-32 sm:px-10 lg:px-16">
+      <div className="mx-auto flex min-h-[88vh] max-w-[1280px] flex-col justify-start pt-16 pb-24 px-6 sm:justify-center sm:pt-32 sm:px-10 lg:px-16">
         <motion.div
           initial={initial}
           animate={animate}

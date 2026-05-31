@@ -21,34 +21,39 @@ type Ribbon = {
   amplitude: number; // vertical undulation in px
   phaseSpeed: number; // phase advance per rendered frame (the speed knob)
   wavelengthFrac: number; // wave length as a fraction of canvas width
+  driftSeconds: number; // seconds for the whole band to scroll one hero width
 };
 
 const RIBBONS: Ribbon[] = [
   {
     baseYFrac: 0.88,
-    direction: 1,
+    direction: 1, // scrolls left-to-right
     color: [94, 106, 210], // #5e6ad2 — brand lavender
-    alpha: 0.04,
+    alpha: 0.06,
     radius: 150,
     amplitude: 25,
-    phaseSpeed: 0.0035,
+    phaseSpeed: 0.008,
     wavelengthFrac: 0.9,
+    driftSeconds: 24,
   },
   {
     baseYFrac: 0.95,
-    direction: -1,
+    direction: -1, // scrolls right-to-left
     color: [130, 143, 255], // #828fff — lighter lavender hover tint
-    alpha: 0.03,
+    alpha: 0.05,
     radius: 180,
     amplitude: 25,
-    phaseSpeed: 0.0028,
+    phaseSpeed: 0.006,
     wavelengthFrac: 1.1,
+    driftSeconds: 30,
   },
 ];
 
-// Distance between sprite stamps along a path. Smaller = smoother band,
-// more draw calls. At ~22px with 150px+ radii the stamps heavily overlap.
-const STEP = 22;
+// Distance between sprite stamps along a path. Larger = fewer overlapping
+// stamps, so the wave's movement reads as texture instead of washing into a
+// smooth uniform band. Raised 22 → 36 (~40% fewer stamps); per-stamp alpha
+// bumped to compensate so overall brightness holds.
+const STEP = 36;
 
 const TARGET_FPS = 30;
 const FRAME_MS = 1000 / TARGET_FPS;
@@ -107,6 +112,8 @@ export default function HeroAurora() {
     let rafId = 0;
     let running = false;
     let lastTime = 0;
+    let startTime = 0;
+    let elapsedMs = 0; // wall-clock since first frame; drives the global drift
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
@@ -125,13 +132,22 @@ export default function HeroAurora() {
       RIBBONS.forEach((ribbon, i) => {
         const sprite = sprites[i] as CanvasImageSource;
         const baseY = height * ribbon.baseYFrac;
-        const k = (Math.PI * 2) / (width * ribbon.wavelengthFrac);
+        const wavelength = width * ribbon.wavelengthFrac;
+        const k = (Math.PI * 2) / wavelength;
         const phase = phases[i];
         const d = ribbon.radius * 2;
+        // Global drift: the whole waveform scrolls one hero width per
+        // driftSeconds. Wrapped to one wavelength (mod) so the sine stays
+        // continuous across the loop — scrolls forever with no snap.
+        const driftPx =
+          (((elapsedMs / 1000 / ribbon.driftSeconds) * width) % wavelength) *
+          ribbon.direction;
         ctx.globalAlpha = ribbon.alpha;
         for (let x = -ribbon.radius; x <= width + ribbon.radius; x += STEP) {
           const y =
-            baseY + ribbon.amplitude * Math.sin(x * k + phase * ribbon.direction);
+            baseY +
+            ribbon.amplitude *
+              Math.sin((x + driftPx) * k + phase * ribbon.direction);
           ctx.drawImage(sprite, x - ribbon.radius, y - ribbon.radius, d, d);
         }
       });
@@ -143,6 +159,8 @@ export default function HeroAurora() {
       rafId = requestAnimationFrame(loop);
       if (t - lastTime < FRAME_MS) return; // throttle to ~30fps
       lastTime = t;
+      if (startTime === 0) startTime = t;
+      elapsedMs = t - startTime;
       for (let i = 0; i < RIBBONS.length; i++) {
         phases[i] += RIBBONS[i].phaseSpeed;
       }
