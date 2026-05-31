@@ -114,13 +114,6 @@ export default function Hero() {
 
   return (
     <section className="relative isolate overflow-hidden">
-      {/* Future animated background — keep this slot empty until approved */}
-      <div
-        id="hero-bg"
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10"
-      />
-
       <div className="mx-auto flex min-h-[88vh] max-w-[1280px] flex-col justify-start pt-16 pb-24 px-6 sm:justify-center sm:pt-32 sm:px-10 lg:px-16">
         <motion.div
           initial={initial}
