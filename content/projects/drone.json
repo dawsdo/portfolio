@@ -1,0 +1,10 @@
+{
+  "slug": "drone",
+  "title": "Collision Analysis Drone System",
+  "dates": "Jan 2026 – May 2026",
+  "context": "Class capstone · Team of 5",
+  "tags": ["Python", "YOLOv8", "OpenCV", "Flask", "React"],
+  "metrics": "92% detection accuracy · 30+ FPS · sub-100ms latency",
+  "description": "Real-time emergency response dashboard pairing DJI drones with YOLOv8 to support first-responder decisions at crash scenes.",
+  "status": "published"
+}

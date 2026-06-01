@@ -1,0 +1,26 @@
+## The problem
+
+First-responders at crash scenes spend the first minutes of any call piecing together the same question: what did we roll into? In 2026, most departments still answer that from radio descriptions and whatever the closest unit can see on foot. We built a system that answers it from above.
+
+## What we built
+
+The Collision Analysis Drone System pairs a DJI Tello with a real-time computer vision pipeline and a React dashboard. The drone streams live video to a Flask backend, where YOLOv8 runs object detection on every frame — flagging vehicles, casualties, debris fields, and hazard markers. Results land on a response dashboard that first-responders can pull up on a tablet at the command post.
+
+## The dataset was the work
+
+YOLOv8 comes pre-trained on COCO, which knows about cars and people in everyday contexts. Crash scenes are different: vehicles at oblique angles, casualties partially occluded, debris that reads as visual noise. We collected and labeled a custom dataset of aerial collision imagery, then fine-tuned the model against it. Getting from roughly 74% accuracy to **92%** was mostly a labeling problem, not a modeling problem.
+
+## Architecture
+
+The pipeline runs in four stages:
+
+- **DJI Tello** — streams MJPEG over UDP at up to 30 FPS
+- **Flask backend** — receives frames, runs YOLOv8 inference, emits detection events via WebSocket
+- **React dashboard** — subscribes to the detection stream and renders the annotated video feed alongside a structured incident log
+- **Latency target** — end-to-end under 100ms from frame capture to dashboard update
+
+The backend and dashboard run on a local machine at the scene; nothing goes to the cloud. Latency stays predictable and there's no dependency on cell coverage at an incident.
+
+## What I'd change
+
+The latency budget is tight on the Flask side. Moving frame ingestion to a Go service — while keeping the YOLOv8 inference in Python — would open up headroom without rewriting the ML code. We also hit the Tello's 30-meter range ceiling quickly in outdoor testing. A production version needs a drone with real range, weatherproofing, and a proper gimbal.

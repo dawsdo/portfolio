@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment } from "react";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -9,6 +10,7 @@ type MetricSegment = { text: string; emphasis?: boolean };
 type Metric = MetricSegment[];
 
 type Project = {
+  slug: string;
   title: string;
   dates: string;
   description: string;
@@ -18,6 +20,7 @@ type Project = {
 
 const projects: Project[] = [
   {
+    slug: "drone",
     title: "Collision Analysis Drone System",
     dates: "Jan 2026 – May 2026",
     description:
@@ -39,6 +42,7 @@ const projects: Project[] = [
     tags: ["Python", "YOLOv8", "OpenCV", "Flask", "React"],
   },
   {
+    slug: "seizure-diary",
     title: "Seizure Diary Platform",
     dates: "Jan 2026 – Apr 2026",
     description:
@@ -51,6 +55,7 @@ const projects: Project[] = [
     tags: ["Next.js", "PostgreSQL", "Prisma", "OAuth 2.0"],
   },
   {
+    slug: "cloud-files",
     title: "AWS Cloud File Distribution",
     dates: "Mar 2025 – May 2025",
     description:
@@ -102,60 +107,65 @@ export default function SelectedWork() {
 
       <div className="mt-10 flex flex-col gap-6 lg:mt-12">
         {projects.map((project, i) => (
-          <motion.article
-            key={project.title}
-            initial={initial}
-            whileInView={inView}
-            viewport={viewport}
-            transition={t(0.08 + i * 0.1)}
-            className="flex flex-col gap-6 rounded-lg border border-hairline bg-surface-1 p-8 transition duration-200 ease-linear-out hover:border-hairline-strong hover:bg-surface-2 motion-safe:hover:-translate-y-1 lg:p-10"
+          <Link
+            key={project.slug}
+            href={`/projects/${project.slug}`}
+            className="block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus"
           >
-            <header className="flex items-baseline justify-between gap-4">
-              <h3 className="text-[22px] font-medium leading-[1.25] tracking-[-0.4px] text-ink">
-                {project.title}
-              </h3>
-              <span className="whitespace-nowrap font-mono text-xs text-ink-subtle">
-                {project.dates}
-              </span>
-            </header>
+            <motion.article
+              initial={initial}
+              whileInView={inView}
+              viewport={viewport}
+              transition={t(0.08 + i * 0.1)}
+              className="flex flex-col gap-6 rounded-lg border border-hairline bg-surface-1 p-8 transition duration-200 ease-linear-out hover:border-hairline-strong hover:bg-surface-2 motion-safe:hover:-translate-y-1 lg:p-10"
+            >
+              <header className="flex items-baseline justify-between gap-4">
+                <h3 className="text-[22px] font-medium leading-[1.25] tracking-[-0.4px] text-ink">
+                  {project.title}
+                </h3>
+                <span className="whitespace-nowrap font-mono text-xs text-ink-subtle">
+                  {project.dates}
+                </span>
+              </header>
 
-            <p className="max-w-[68ch] text-lg leading-[1.5] tracking-[-0.01em] text-ink-muted">
-              {project.description}
-            </p>
+              <p className="max-w-[68ch] text-lg leading-[1.5] tracking-[-0.01em] text-ink-muted">
+                {project.description}
+              </p>
 
-            {project.metrics.length > 0 && (
-              <div className="text-xs leading-[1.4] text-ink-subtle">
-                {project.metrics.map((segments, mi) => (
-                  <Fragment key={mi}>
-                    {mi > 0 && (
-                      <span className="mx-2 text-ink-tertiary" aria-hidden="true">
-                        ·
-                      </span>
-                    )}
-                    {segments.map((seg, si) => (
-                      <span
-                        key={si}
-                        className={seg.emphasis ? "text-ink" : undefined}
-                      >
-                        {seg.text}
-                      </span>
-                    ))}
-                  </Fragment>
+              {project.metrics.length > 0 && (
+                <div className="text-xs leading-[1.4] text-ink-subtle">
+                  {project.metrics.map((segments, mi) => (
+                    <Fragment key={mi}>
+                      {mi > 0 && (
+                        <span className="mx-2 text-ink-tertiary" aria-hidden="true">
+                          ·
+                        </span>
+                      )}
+                      {segments.map((seg, si) => (
+                        <span
+                          key={si}
+                          className={seg.emphasis ? "text-ink" : undefined}
+                        >
+                          {seg.text}
+                        </span>
+                      ))}
+                    </Fragment>
+                  ))}
+                </div>
+              )}
+
+              <ul className="flex flex-wrap gap-1.5">
+                {project.tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="inline-flex items-center rounded-md border border-hairline bg-surface-2 px-2.5 py-1 text-xs text-ink-lavender"
+                  >
+                    {tag}
+                  </li>
                 ))}
-              </div>
-            )}
-
-            <ul className="flex flex-wrap gap-1.5">
-              {project.tags.map((tag) => (
-                <li
-                  key={tag}
-                  className="inline-flex items-center rounded-md border border-hairline bg-surface-2 px-2.5 py-1 text-xs text-ink-lavender"
-                >
-                  {tag}
-                </li>
-              ))}
-            </ul>
-          </motion.article>
+              </ul>
+            </motion.article>
+          </Link>
         ))}
       </div>
     </section>

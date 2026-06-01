@@ -1,0 +1,10 @@
+{
+  "slug": "cloud-files",
+  "title": "AWS Cloud File Distribution",
+  "dates": "Mar 2025 – May 2025",
+  "context": "Personal project",
+  "tags": ["Python", "Flask", "AWS Lambda", "S3", "MySQL"],
+  "metrics": "Eliminated 100% of manual distribution overhead",
+  "description": "A serverless file-sharing system with tokenized S3 links and automated SES email delivery.",
+  "status": "stub"
+}
