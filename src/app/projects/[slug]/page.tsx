@@ -3,6 +3,7 @@ import path from "path";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { CaseStudyNav } from "@/components/CaseStudyNav";
 
 type ProjectMeta = {
   slug: string;
@@ -16,7 +17,6 @@ type ProjectMeta = {
 };
 
 const PROJECT_ORDER = ["drone", "seizure-diary", "cloud-files"] as const;
-type ProjectSlug = (typeof PROJECT_ORDER)[number];
 
 function getMeta(slug: string): ProjectMeta | null {
   try {
@@ -129,13 +129,6 @@ export default async function ProjectPage({ params }: Props) {
   const meta = getMeta(slug);
   if (!meta) return notFound();
 
-  const currentIndex = PROJECT_ORDER.indexOf(slug as ProjectSlug);
-  const nextSlug =
-    currentIndex !== -1 && currentIndex < PROJECT_ORDER.length - 1
-      ? PROJECT_ORDER[currentIndex + 1]
-      : null;
-  const nextMeta = nextSlug ? getMeta(nextSlug) : null;
-
   const source = getMDXSource(slug);
 
   return (
@@ -187,32 +180,7 @@ export default async function ProjectPage({ params }: Props) {
         )}
       </article>
 
-      {/* Footer nav */}
-      <footer className="mx-auto max-w-[720px] px-6 pb-20 sm:px-10 sm:pb-32 lg:px-16">
-        <hr className="mb-8 border-0 border-t border-hairline" />
-        {nextMeta ? (
-          <div className="flex items-center justify-between">
-            <span className="text-xs uppercase tracking-[0.4px] text-ink-tertiary">
-              Next
-            </span>
-            <Link
-              href={`/projects/${nextMeta.slug}`}
-              className="rounded-sm text-sm text-primary transition-colors duration-200 ease-linear-out hover:text-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus"
-            >
-              {nextMeta.title} →
-            </Link>
-          </div>
-        ) : (
-          <div className="flex justify-end">
-            <Link
-              href="/#work"
-              className="rounded-sm text-sm text-primary transition-colors duration-200 ease-linear-out hover:text-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-focus"
-            >
-              View all work →
-            </Link>
-          </div>
-        )}
-      </footer>
+      <CaseStudyNav currentSlug={slug} />
     </main>
   );
 }

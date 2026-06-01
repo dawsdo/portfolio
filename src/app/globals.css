@@ -290,3 +290,45 @@ body {
   .pacman-dot-m8,  .pacman-dot-m9,  .pacman-dot-m10,
   .pacman-dot-m11, .pacman-dot-m12 { display: none; }
 }
+
+/* ── CaseStudyNav ─────────────────────────────────────────────────────── */
+
+.cs-nav-arrow {
+  display: inline-block;
+  transition: transform 200ms ease-out;
+}
+
+.cs-nav-link-title {
+  transition: color 200ms ease-out;
+}
+
+/* Hover effects only on pointer devices that support true hover */
+@media (hover: hover) {
+  .cs-nav-prev:hover .cs-nav-link-title,
+  .cs-nav-next:hover .cs-nav-link-title {
+    color: var(--color-primary);
+  }
+  .cs-nav-prev:hover .cs-nav-arrow {
+    transform: translateX(-2px);
+  }
+  .cs-nav-next:hover .cs-nav-arrow {
+    transform: translateX(2px);
+  }
+}
+
+/* Focus state applies regardless of pointer type */
+.cs-nav-prev:focus-visible .cs-nav-link-title,
+.cs-nav-next:focus-visible .cs-nav-link-title {
+  color: var(--color-primary);
+}
+
+/* Collapse arrow slide for users who prefer reduced motion; color shift stays */
+@media (prefers-reduced-motion: reduce) {
+  .cs-nav-arrow {
+    transition: none;
+  }
+  .cs-nav-prev:hover .cs-nav-arrow,
+  .cs-nav-next:hover .cs-nav-arrow {
+    transform: none;
+  }
+}
