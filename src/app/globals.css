@@ -306,7 +306,7 @@ body {
 @media (hover: hover) {
   .cs-nav-prev:hover .cs-nav-link-title,
   .cs-nav-next:hover .cs-nav-link-title {
-    color: var(--color-primary);
+    color: var(--color-ink);
   }
   .cs-nav-prev:hover .cs-nav-arrow {
     transform: translateX(-2px);
@@ -319,7 +319,7 @@ body {
 /* Focus state applies regardless of pointer type */
 .cs-nav-prev:focus-visible .cs-nav-link-title,
 .cs-nav-next:focus-visible .cs-nav-link-title {
-  color: var(--color-primary);
+  color: var(--color-ink);
 }
 
 /* Collapse arrow slide for users who prefer reduced motion; color shift stays */

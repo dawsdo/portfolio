@@ -55,12 +55,12 @@ export function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           <span className="font-mono text-[12px] tracking-[0.05em] text-ink-subtle">
             Previous
           </span>
-          <span className="cs-nav-link-title mt-2 flex items-baseline gap-1.5 text-[18px] font-medium leading-snug tracking-[-0.01em] text-ink">
+          <span className="cs-nav-link-title mt-1.5 flex items-baseline gap-1.5 text-sm leading-snug tracking-[-0.01em] text-ink-subtle">
             <span className="cs-nav-arrow shrink-0">←</span>
             <span>
               {prev.title}
               {prev.status === "stub" && (
-                <span className="ml-1.5 text-sm font-normal !text-ink-tertiary">
+                <span className="ml-1.5 !text-ink-tertiary">
                   (coming soon)
                 </span>
               )}
@@ -77,11 +77,11 @@ export function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           <span className="font-mono text-[12px] tracking-[0.05em] text-ink-subtle">
             Next
           </span>
-          <span className="cs-nav-link-title mt-2 flex items-baseline gap-1.5 text-right text-[18px] font-medium leading-snug tracking-[-0.01em] text-ink">
+          <span className="cs-nav-link-title mt-1.5 flex items-baseline gap-1.5 text-right text-sm leading-snug tracking-[-0.01em] text-ink-subtle">
             <span>
               {next.title}
               {next.status === "stub" && (
-                <span className="ml-1.5 text-sm font-normal !text-ink-tertiary">
+                <span className="ml-1.5 !text-ink-tertiary">
                   (coming soon)
                 </span>
               )}
