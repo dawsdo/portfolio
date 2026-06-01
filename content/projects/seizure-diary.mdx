@@ -1,3 +1,31 @@
-This case study is on the way. I'm still writing it up.
+I built this for my dad. He had a seizure that left him with aphasia and partial paralysis on one side. The walking stick, the slow speech, the way half his face stays still when he tries to smile — none of it announced itself in advance. I started the Seizure Diary because the people I love deserve better tools for understanding the things that happen to them.
 
-In the meantime, the Selected Work card on the homepage has the elevator pitch, and the stack ribbon shows the technologies. If you want details on what I built, the fastest path is to email me — link below.
+### The problem with existing health logs
+
+Most seizure tracking happens in two forms today: paper notebooks that get lost, and consumer wellness apps that treat seizures like a wellness metric next to steps and sleep score. Neither is right. Paper has no structure for later analysis. Consumer apps have structure but no respect — they don't ask the questions a neurologist would, and they pump the data through advertising and insurance pipelines that patients shouldn't have to consent to in order to track their own body.
+
+A purpose-built platform sits between those two extremes. Structured enough that patterns can emerge over time. Private enough that the data belongs to the patient, not a vendor. That's what I wanted to build.
+
+### What I built (v1)
+
+The current platform is a Next.js application with PostgreSQL persistence via Prisma ORM and OAuth 2.0 authentication. Patients can sign in, log seizure events with structured fields (timestamp, duration, symptoms, location), and add free-text notes per event. Each user owns their own data — there's no shared visibility yet, no caregiver or provider roles. That's intentional for v1: get the foundation right before introducing the complexity of multi-role access.
+
+### The deep dive: schema design for health data
+
+The most interesting engineering decision was the data model. Health data has properties that ordinary CRUD apps don't share. Events are time-series but also have nested optional fields. Some events are tightly structured (duration in minutes, symptoms from a controlled vocabulary), others are unstructured (a free-text note describing what the patient felt that the form didn't capture). The schema has to accept both shapes cleanly and let analytics layer on top without contortion.
+
+I designed the Prisma schema around a `User` and an `Event` table, where `Event` has required structured fields and optional unstructured ones. Symptoms are stored as a typed enum rather than a free string, which costs me one extra step at form-input time but pays back when I later want to aggregate or correlate events programmatically. Free-text notes live in a separate field with no parser constraints — patients can write whatever they need, and the structured fields stay clean.
+
+Prisma's type generation turned out to be the right call for this domain. Health data should not be silently coerced. A `null` symptom field and an empty string are different — one means "not recorded," the other means "actively recorded as nothing." Prisma's generated types enforce that distinction at compile time, which catches bugs I wouldn't catch reviewing my own code.
+
+### What's next
+
+The closest-to-shippable next feature is environmental trigger correlation. Once a patient has logged enough events, the platform should be able to surface correlations — "in the past 90 days, events tend to cluster on days when you reported less than 6 hours of sleep the night before." That's a real analytical capability, not a visualization, and it's the feature that turns the diary from a *record* into a *tool*. The schema is built to support this; the analytics layer isn't written yet.
+
+Past that, the roadmap includes patient-caregiver shared visibility (real RBAC, not the per-user isolation I have now), trends visualization, and clinician-friendly export. I'd rather ship correlations well than ship all four features poorly.
+
+### What I'd do differently
+
+Two things. First, I'd treat the schema design as a separate phase from the application build, not interleaved with it. I made a few schema decisions early that I'd undo now — small things, like representing duration as an integer of minutes instead of a more flexible interval type. Schema migrations are doable but they're work, and a clean upfront design pass would have saved me from the cleanup.
+
+Second, I'd write more tests against the auth boundary specifically. The hardest bugs to catch in a system like this are the ones where a user can accidentally see data that isn't theirs. I tested manually and it works, but a dedicated test suite around per-user data isolation would let me sleep better at night.
