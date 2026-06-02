@@ -1,3 +1,29 @@
-This case study is on the way. I'm still writing it up.
+I wanted to learn AWS the way you actually learn infrastructure: by building something that uses real services for real reasons. A file distribution system was the right size — small enough to ship solo, complex enough that I'd have to make real architectural decisions, and useful enough that I'd have a finished thing at the end.
 
-In the meantime, the Selected Work card on the homepage has the elevator pitch, and the stack ribbon shows the technologies. If you want details on what I built, the fastest path is to email me — link below.
+### What it does
+
+The system takes uploaded files, stores them in S3, and distributes time-limited download links via email. A user uploads a file, the backend records the upload, a Lambda function generates a pre-signed S3 URL, and SES emails the link to the intended recipient. The recipient clicks the link, downloads the file directly from S3 within the URL's expiration window, and the system logs the access. Everything is metered by per-user audit logs in a MySQL database on RDS.
+
+### The architecture decision: why hybrid, not pure serverless
+
+The most interesting decision I had to make was whether to run everything on Lambda or split the workload across Lambda and EC2. The "modern" instinct is pure serverless — but pure serverless was wrong for this system, and the case study deserves the actual reason.
+
+The Flask API serving regular HTTP traffic — user auth, file metadata reads, status checks — runs on EC2. The reason is cost shape. Lambda charges per invocation plus duration, which is cheap when traffic is bursty but accumulates fast under steady-state load. For an always-on API handling regular request traffic, EC2 is the cheaper baseline. The Lambda free tier is generous; running an API server's lifetime on it is not.
+
+The event-driven pieces — pre-signed URL generation, SES email send-offs triggered by S3 state changes — run on Lambda. These are the cases Lambda was built for: short, isolated, bursty, stateless. A new file arrives in S3, the bucket emits an event, Lambda picks it up, mints a URL, hands it off to SES. The whole flow lasts a few hundred milliseconds. Paying per-invocation for that is exactly the right cost model.
+
+The result is each service running where its cost curve is flat. Pure serverless would have cost more for the always-on API surface; pure server-based would have lost the event-driven elegance of S3 → Lambda → SES.
+
+### Data model
+
+The MySQL schema is small but does real work. Three primary tables: `users`, `files`, and `access_tokens`. Each file has an owner; each access token has a file, a recipient identifier, and an expiration timestamp. Audit log entries reference the token used and the timestamp of access, so every download is traceable. The indexing is straightforward — user-scoped lookups on file lists, token-scoped lookups on access — but having that structure from day one meant adding the audit logging on top was a single migration, not a refactor.
+
+### What landed
+
+The system runs end-to-end. Files can be uploaded through the API, distributed via SES, downloaded via pre-signed URL, and every access is logged. The hybrid architecture is doing what I designed it to do — the API stays inexpensive under steady traffic, the event-driven Lambda paths handle bursts cleanly.
+
+### What I'd do differently
+
+Two things. First, I'd write infrastructure-as-code from the start — Terraform or AWS CDK — instead of provisioning resources by hand through the console. A console-built environment is unrepeatable; I rebuilt parts of the stack twice during development because I lost track of a setting. Even a small CDK project would have made the second time-through trivial.
+
+Second, I'd add stricter scope checks on the pre-signed URLs. They work, and they're short-lived, but the security model deserves more attention than I gave it. A v2 would tie URL generation more tightly to authenticated user actions, with logging that captures the requesting user's identity at mint time rather than just at access time. The current setup is fine for a personal learning project; for anything real, that gap closes.
