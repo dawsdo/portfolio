@@ -5,6 +5,6 @@
   "context": "Personal project",
   "tags": ["Next.js", "React", "PostgreSQL", "Prisma", "OAuth 2.0"],
   "metrics": "Per-user data isolation · Type-safe schemas · OAuth 2.0",
-  "description": "A secure health platform for patients to log seizure events and correlate environmental triggers over time.",
+  "description": "A health platform for patients to log structured seizure events.",
   "status": "published"
 }

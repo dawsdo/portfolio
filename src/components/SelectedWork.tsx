@@ -46,11 +46,11 @@ const projects: Project[] = [
     title: "Seizure Diary Platform",
     dates: "Jan 2026 – Apr 2026",
     description:
-      "A secure health platform for patients to log seizure events and correlate environmental triggers over time.",
+      "A health platform for patients to log structured seizure events.",
     metrics: [
-      [{ text: "Role-based access" }],
+      [{ text: "Per-user data isolation" }],
       [{ text: "Type-safe schemas" }],
-      [{ text: "Zero-downtime CI/CD" }],
+      [{ text: "OAuth 2.0" }],
     ],
     tags: ["Next.js", "React", "PostgreSQL", "Prisma", "OAuth 2.0"],
   },
