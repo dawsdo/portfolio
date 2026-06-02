@@ -4,7 +4,7 @@
   "dates": "Jan 2026 – Apr 2026",
   "context": "Personal project",
   "tags": ["Next.js", "React", "PostgreSQL", "Prisma", "OAuth 2.0"],
-  "metrics": "Role-based access · Type-safe schemas · Zero-downtime CI/CD",
+  "metrics": "Per-user data isolation · Type-safe schemas · OAuth 2.0",
   "description": "A secure health platform for patients to log seizure events and correlate environmental triggers over time.",
   "status": "published"
 }
