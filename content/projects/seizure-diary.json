@@ -3,7 +3,7 @@
   "title": "Seizure Diary Platform",
   "dates": "Jan 2026 – Apr 2026",
   "context": "Personal project",
-  "tags": ["Next.js", "PostgreSQL", "Prisma", "OAuth 2.0"],
+  "tags": ["Next.js", "React", "PostgreSQL", "Prisma", "OAuth 2.0"],
   "metrics": "Role-based access · Type-safe schemas · Zero-downtime CI/CD",
   "description": "A secure health platform for patients to log seizure events and correlate environmental triggers over time.",
   "status": "published"

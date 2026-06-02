@@ -39,7 +39,7 @@ const projects: Project[] = [
         { text: " latency" },
       ],
     ],
-    tags: ["Python", "YOLOv8", "OpenCV", "Flask", "React"],
+    tags: ["Python", "YOLOv8", "OpenCV", "Roboflow", "Flask", "React"],
   },
   {
     slug: "seizure-diary",
@@ -52,7 +52,7 @@ const projects: Project[] = [
       [{ text: "Type-safe schemas" }],
       [{ text: "Zero-downtime CI/CD" }],
     ],
-    tags: ["Next.js", "PostgreSQL", "Prisma", "OAuth 2.0"],
+    tags: ["Next.js", "React", "PostgreSQL", "Prisma", "OAuth 2.0"],
   },
   {
     slug: "cloud-files",
@@ -67,7 +67,7 @@ const projects: Project[] = [
         { text: " of manual distribution overhead" },
       ],
     ],
-    tags: ["Python", "Flask", "AWS Lambda", "S3", "MySQL"],
+    tags: ["Python", "Flask", "EC2", "AWS Lambda", "S3", "SES", "MySQL"],
   },
 ];
 
