@@ -20,7 +20,7 @@ export default function NotFound() {
   return (
     <main className="flex min-h-screen items-center px-6 py-20 sm:py-32">
       <div className="mx-auto w-full max-w-2xl">
-        <motion.p
+        <motion.h1
           initial={initial}
           animate={animate}
           transition={t(0)}
@@ -28,7 +28,7 @@ export default function NotFound() {
           aria-label="404"
         >
           4<span className="text-primary">0</span>4
-        </motion.p>
+        </motion.h1>
 
         <motion.p
           initial={initial}
