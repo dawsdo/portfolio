@@ -23,6 +23,8 @@ export default function FeedbackWidget() {
   const [submitting, setSubmitting] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const prevFocusRef = useRef<Element | null>(null);
 
   // Never show on 404 or any case study page
   const isExcluded =
@@ -30,20 +32,29 @@ export default function FeedbackWidget() {
 
   const getDismissed = () => {
     try {
-      return localStorage.getItem(STORAGE_KEY) === "true";
+      return (
+        localStorage.getItem(STORAGE_KEY) === "true" ||
+        sessionStorage.getItem(STORAGE_KEY) === "true"
+      );
     } catch {
       return false;
     }
   };
 
-  const setDismissed = () => {
+  const setSubmitted = () => {
     try {
       localStorage.setItem(STORAGE_KEY, "true");
     } catch {}
   };
 
+  const setSessionDismissed = () => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, "true");
+    } catch {}
+  };
+
   const dismiss = () => {
-    setDismissed();
+    setSessionDismissed();
     setState("idle");
   };
 
@@ -100,6 +111,49 @@ export default function FeedbackWidget() {
     return () => clearTimeout(timer);
   }, [state]);
 
+  // Save focus when dialog opens; restore it when dialog closes
+  const isActive = state !== "idle";
+  useEffect(() => {
+    if (isActive) {
+      prevFocusRef.current = document.activeElement;
+    } else {
+      if (prevFocusRef.current instanceof HTMLElement) {
+        prevFocusRef.current.focus();
+      }
+    }
+  }, [isActive]);
+
+  // Trap Tab focus inside the dialog while open
+  useEffect(() => {
+    if (!isActive) return;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      const focusable = Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), textarea, input, [tabindex]:not([tabindex="-1"])'
+        )
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    dialog.addEventListener("keydown", handleTab);
+    return () => dialog.removeEventListener("keydown", handleTab);
+  }, [isActive]);
+
   const handleSubmit = async () => {
     if (!feedback.trim() || submitting) return;
     setSubmitting(true);
@@ -119,7 +173,7 @@ export default function FeedbackWidget() {
         }),
       });
       if (res.ok) {
-        setDismissed();
+        setSubmitted();
         setState("success");
       } else {
         setError("Couldn't send — try again?");
@@ -163,13 +217,16 @@ export default function FeedbackWidget() {
           transition={cardTransition}
           className="fixed bottom-4 left-4 right-4 z-[60] sm:bottom-6 sm:left-auto sm:right-6 sm:w-80"
         >
-          <div className="rounded-lg border border-hairline bg-surface-2 p-5">
+          <div ref={dialogRef} className="rounded-lg border border-hairline bg-surface-2 p-5">
 
             {/* ── State 3: Success ── */}
             {state === "success" && (
-              <p className="py-1 text-center text-sm text-ink">
+              <h2
+                id="feedback-heading"
+                className="py-1 text-center text-sm font-normal text-ink"
+              >
                 Thanks. Really helpful.
-              </p>
+              </h2>
             )}
 
             {/* ── State 2: Form ── */}
@@ -235,12 +292,12 @@ export default function FeedbackWidget() {
             {/* ── State 1: Prompt ── */}
             {state === "prompt" && (
               <>
-                <p
+                <h2
                   id="feedback-heading"
-                  className="mb-2 font-mono text-xs text-ink-tertiary"
+                  className="mb-2 font-mono text-xs font-normal text-ink-tertiary"
                 >
                   Feedback
-                </p>
+                </h2>
                 <p className="text-base leading-[1.5] tracking-[-0.05px] text-ink">
                   Curious what you think of this so far. If something didn&rsquo;t work, was confusing, or felt missing, I&rsquo;d love to know.
                 </p>
