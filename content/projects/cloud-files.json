@@ -5,6 +5,9 @@
   "context": "Personal project",
   "tags": ["Python", "Flask", "EC2", "AWS Lambda", "S3", "SES", "MySQL"],
   "metrics": "Eliminated 100% of manual distribution overhead",
+  "metricsSegments": [
+    [{ "text": "Eliminated " }, { "text": "100%", "emphasis": true }, { "text": " of manual distribution overhead" }]
+  ],
   "description": "A serverless file-sharing system with tokenized S3 links and automated SES email delivery.",
   "status": "published"
 }

@@ -6,10 +6,10 @@ import { motion, useReducedMotion } from "framer-motion";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-type MetricSegment = { text: string; emphasis?: boolean };
-type Metric = MetricSegment[];
+export type MetricSegment = { text: string; emphasis?: boolean };
+export type Metric = MetricSegment[];
 
-type Project = {
+export type ProjectCard = {
   slug: string;
   title: string;
   dates: string;
@@ -18,60 +18,9 @@ type Project = {
   tags: string[];
 };
 
-const projects: Project[] = [
-  {
-    slug: "drone",
-    title: "Collision Analysis Drone System",
-    dates: "Jan 2026 – May 2026",
-    description:
-      "Real-time emergency response dashboard pairing DJI drones with YOLOv8 to support first-responder decisions at crash scenes.",
-    metrics: [
-      [
-        { text: "92%", emphasis: true },
-        { text: " detection accuracy" },
-      ],
-      [
-        { text: "30+", emphasis: true },
-        { text: " FPS" },
-      ],
-      [
-        { text: "sub-100ms", emphasis: true },
-        { text: " latency" },
-      ],
-    ],
-    tags: ["Python", "YOLOv8", "OpenCV", "Roboflow", "Flask", "React"],
-  },
-  {
-    slug: "seizure-diary",
-    title: "Seizure Diary Platform",
-    dates: "Jan 2026 – Apr 2026",
-    description:
-      "A health platform for patients to log structured seizure events.",
-    metrics: [
-      [{ text: "Per-user data isolation" }],
-      [{ text: "Type-safe schemas" }],
-      [{ text: "OAuth 2.0" }],
-    ],
-    tags: ["Next.js", "React", "PostgreSQL", "Prisma", "OAuth 2.0"],
-  },
-  {
-    slug: "cloud-files",
-    title: "AWS Cloud File Distribution",
-    dates: "Mar 2025 – May 2025",
-    description:
-      "A serverless file-sharing system with tokenized S3 links and automated SES email delivery.",
-    metrics: [
-      [
-        { text: "Eliminated " },
-        { text: "100%", emphasis: true },
-        { text: " of manual distribution overhead" },
-      ],
-    ],
-    tags: ["Python", "Flask", "EC2", "AWS Lambda", "S3", "SES", "MySQL"],
-  },
-];
+type Props = { projects: ProjectCard[] };
 
-export default function SelectedWork() {
+export default function SelectedWork({ projects }: Props) {
   const prefersReducedMotion = useReducedMotion();
 
   const initial = prefersReducedMotion

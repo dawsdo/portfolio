@@ -5,6 +5,11 @@
   "context": "Personal project",
   "tags": ["Next.js", "React", "PostgreSQL", "Prisma", "OAuth 2.0"],
   "metrics": "Per-user data isolation · Type-safe schemas · OAuth 2.0",
+  "metricsSegments": [
+    [{ "text": "Per-user data isolation" }],
+    [{ "text": "Type-safe schemas" }],
+    [{ "text": "OAuth 2.0" }]
+  ],
   "description": "A health platform for patients to log structured seizure events.",
   "status": "published"
 }

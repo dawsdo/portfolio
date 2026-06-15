@@ -5,6 +5,11 @@
   "context": "Class capstone · Team of 5",
   "tags": ["Python", "YOLOv8", "OpenCV", "Roboflow", "Flask", "React"],
   "metrics": "92% detection accuracy · 30+ FPS · sub-100ms latency",
+  "metricsSegments": [
+    [{ "text": "92%", "emphasis": true }, { "text": " detection accuracy" }],
+    [{ "text": "30+", "emphasis": true }, { "text": " FPS" }],
+    [{ "text": "sub-100ms", "emphasis": true }, { "text": " latency" }]
+  ],
   "description": "Real-time emergency response dashboard pairing DJI drones with YOLOv8 to support first-responder decisions at crash scenes.",
   "status": "published"
 }

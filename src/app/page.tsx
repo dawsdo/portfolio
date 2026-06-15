@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import SelectedWork from "@/components/SelectedWork";
+import SelectedWorkSection from "@/components/SelectedWorkSection";
 import HowIBuild from "@/components/HowIBuild";
 import Stack from "@/components/Stack";
 import Contact from "@/components/Contact";
@@ -10,7 +10,7 @@ export default function Home() {
     <main>
       <Hero />
       <About />
-      <SelectedWork />
+      <SelectedWorkSection />
       <HowIBuild />
       <Stack />
       <Contact />
