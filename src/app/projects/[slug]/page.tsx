@@ -18,6 +18,21 @@ type ProjectMeta = {
 
 const PROJECT_ORDER = ["drone", "seizure-diary", "cloud-files"] as const;
 
+function isValidMeta(value: unknown): value is ProjectMeta {
+  if (!value || typeof value !== "object") return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.slug === "string" &&
+    typeof v.title === "string" &&
+    typeof v.dates === "string" &&
+    typeof v.context === "string" &&
+    Array.isArray(v.tags) &&
+    typeof v.metrics === "string" &&
+    typeof v.description === "string" &&
+    (v.status === "published" || v.status === "stub")
+  );
+}
+
 function getMeta(slug: string): ProjectMeta | null {
   try {
     const filePath = path.join(
@@ -26,7 +41,8 @@ function getMeta(slug: string): ProjectMeta | null {
       "projects",
       `${slug}.json`
     );
-    return JSON.parse(fs.readFileSync(filePath, "utf-8")) as ProjectMeta;
+    const parsed: unknown = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    return isValidMeta(parsed) ? parsed : null;
   } catch {
     return null;
   }
