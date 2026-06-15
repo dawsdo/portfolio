@@ -31,7 +31,6 @@ export default function CursorEffects() {
         dotPos.y = e.clientY;
         spotlight.style.opacity = "1";
         dot.style.opacity = "0.4";
-        console.log("[cursor] spotlight zIndex:", spotlight.style.zIndex, "| dot zIndex:", dot.style.zIndex);
       }
     };
 
@@ -59,12 +58,6 @@ export default function CursorEffects() {
           prevInteractive = isInteractive;
           dot.style.transform = isInteractive ? "scale(1.5)" : "scale(1)";
           dot.style.opacity = isInteractive ? "0.6" : "0.4";
-          // DIAGNOSTIC — remove after confirming dot stays on cursor during scale
-          console.log(
-            "[dot state]", isInteractive ? "→ interactive" : "→ normal",
-            "| translate:", +(dotPos.x - 3).toFixed(1), +(dotPos.y - 3).toFixed(1),
-            "| cursor:", +cursor.x.toFixed(1), +cursor.y.toFixed(1),
-          );
         }
       }
       rafId = requestAnimationFrame(loop);
