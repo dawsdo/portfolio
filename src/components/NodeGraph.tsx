@@ -8,7 +8,6 @@ export type ChipData = { label: string; highlights: string[] };
 
 export type NodeGraphProps = {
   inputs: GraphNode[];
-  hub: { kind: "placeholder" };
   outputs: GraphNode[];
   chips: ChipData[];
 };
@@ -387,6 +386,7 @@ export default function NodeGraph({ inputs, outputs, chips }: NodeGraphProps) {
         {chips.map((chip, i) => (
           <motion.li
             key={chip.label}
+            role="button"
             initial={initial}
             whileInView={inView}
             viewport={viewport}
@@ -395,6 +395,12 @@ export default function NodeGraph({ inputs, outputs, chips }: NodeGraphProps) {
             onMouseLeave={() => setHoveredChip(null)}
             onFocus={() => setHoveredChip(chip.label)}
             onBlur={() => setHoveredChip(null)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setHoveredChip(hoveredChip === chip.label ? null : chip.label);
+              }
+            }}
             tabIndex={0}
             className="inline-flex cursor-pointer items-center rounded-md border border-hairline bg-surface-2 px-2.5 py-1 text-xs text-ink-lavender transition duration-200 ease-linear-out hover:bg-surface-3 focus-visible:bg-surface-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-focus"
           >
