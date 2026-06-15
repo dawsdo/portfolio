@@ -45,7 +45,6 @@ export default function HowIBuild() {
             { id: "idea", label: "an idea" },
             { id: "dataset", label: "a dataset" },
           ]}
-          hub={{ kind: "placeholder" }}
           outputs={[
             { id: "fullstack", label: "Full-stack web" },
             { id: "ml", label: "Real-time ML" },
