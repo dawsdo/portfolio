@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "@/components/Button";
+import HeroGlint from "@/components/HeroGlint";
 import Magnetic from "@/components/Magnetic";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -101,6 +102,7 @@ function StatusPill() {
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
+  const nameRef = useRef<HTMLHeadingElement>(null);
 
   const initial = prefersReducedMotion
     ? { opacity: 1, y: 0 }
@@ -134,14 +136,18 @@ export default function Hero() {
           <DayCountdown />
         </motion.div>
 
-        <motion.h1
-          initial={initial}
-          animate={animate}
-          transition={t(0.05)}
-          className="mt-10 text-[clamp(2.5rem,8vw,5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-ink"
-        >
-          Dawson Do
-        </motion.h1>
+        <div className="relative mt-10">
+          <motion.h1
+            ref={nameRef}
+            initial={initial}
+            animate={animate}
+            transition={t(0.05)}
+            className="text-[clamp(2.5rem,8vw,5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-ink"
+          >
+            Dawson Do
+          </motion.h1>
+          <HeroGlint nameRef={nameRef} />
+        </div>
 
         <motion.p
           initial={initial}
