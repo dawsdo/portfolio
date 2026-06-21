@@ -3,9 +3,8 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 
-// Mirrors --color-primary (#5e6ad2) from globals.css
-const ACCENT = "#5e6ad2";
-const ACCENT_RGB = "94, 106, 210";
+const ACCENT = "#b2d0ff";
+const ACCENT_RGB = "178, 208, 255";
 
 const TOTAL_MS = 2000;
 
@@ -131,10 +130,10 @@ export default function HeroGlint({ nameRef }: Props) {
         ctx.save();
         ctx.strokeStyle = ACCENT;
         ctx.lineWidth = 1.2;
-        for (let i = 0; i < 8; i++) {
-          const angle = (i / 8) * Math.PI * 2 + pt * 0.8;
+        for (let i = 0; i < 4; i++) {
+          const angle = (i / 4) * Math.PI * 2 + pt * 0.8;
           ctx.globalAlpha =
-            0.45 + 0.45 * Math.abs(Math.sin(pt * Math.PI * 4 + i));
+            0.25 + 0.25 * Math.abs(Math.sin(pt * Math.PI * 4 + i));
           ctx.beginPath();
           ctx.moveTo(
             gx + Math.cos(angle) * innerR,
@@ -177,10 +176,10 @@ export default function HeroGlint({ nameRef }: Props) {
       if (alpha > 0.01) {
         const glowR = SIZE * 2.8;
         const grd = ctx.createRadialGradient(gx, gy, 0, gx, gy, glowR);
-        grd.addColorStop(0, `rgba(${ACCENT_RGB}, 0.5)`);
+        grd.addColorStop(0, `rgba(${ACCENT_RGB}, 0.2)`);
         grd.addColorStop(1, `rgba(${ACCENT_RGB}, 0)`);
 
-        ctx.globalAlpha = alpha * 0.65;
+        ctx.globalAlpha = alpha * 0.3;
         ctx.beginPath();
         ctx.arc(gx, gy, glowR, 0, Math.PI * 2);
         ctx.fillStyle = grd;
