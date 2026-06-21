@@ -3,41 +3,6 @@
 import { useEffect, useRef } from "react";
 import { useReducedMotion } from "framer-motion";
 
-const ACCENT = "#b2d0ff";
-const ACCENT_RGB = "178, 208, 255";
-
-const TOTAL_MS = 2000;
-
-// Phase end times (0–1). Five phases sum to 1.
-const P1 = 0.32; // corkscrew ends
-const P2 = 0.46; // drift-to-rest ends
-const P3 = 0.62; // vertical bob ends
-const P4 = 0.85; // shimmer ends
-// P5: 0.85–1.0  fly away up-right
-
-const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
-const easeIn = (t: number) => t * t * t;
-
-function drawStar(
-  ctx: CanvasRenderingContext2D,
-  cx: number,
-  cy: number,
-  r: number,
-) {
-  const arms = 4;
-  const inner = r * 0.3;
-  ctx.beginPath();
-  for (let i = 0; i < arms * 2; i++) {
-    const angle = (i / (arms * 2)) * Math.PI * 2 - Math.PI / 4;
-    const rad = i % 2 === 0 ? r : inner;
-    const px = cx + Math.cos(angle) * rad;
-    const py = cy + Math.sin(angle) * rad;
-    if (i === 0) ctx.moveTo(px, py);
-    else ctx.lineTo(px, py);
-  }
-  ctx.closePath();
-}
-
 interface Props {
   nameRef: React.RefObject<HTMLHeadingElement | null>;
 }
@@ -45,161 +10,134 @@ interface Props {
 export default function HeroGlint({ nameRef }: Props) {
   const prefersReducedMotion = useReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    // Authoritative runtime check (catches dynamic preference changes)
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const canvas = canvasRef.current;
+    const cv = canvasRef.current;
     const h1 = nameRef.current;
-    if (!canvas || !h1) return;
+    if (!cv || !h1) return;
 
-    // canvas.getContext("2d") is always non-null for a valid <canvas> element
-    const ctx = canvas.getContext("2d")!;
+    const ctx = cv.getContext("2d")!;
+    const W = h1.offsetWidth;
+    const H = h1.offsetHeight;
 
-    // Measure rendered text width using the h1's computed font
+    if (W === 0 || H === 0) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    cv.width = W * dpr;
+    cv.height = H * dpr;
+    cv.style.width = `${W}px`;
+    cv.style.height = `${H}px`;
+    ctx.scale(dpr, dpr);
+
     const cs = window.getComputedStyle(h1);
     const tmpCtx = document.createElement("canvas").getContext("2d")!;
     tmpCtx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
     const textW = Math.ceil(tmpCtx.measureText("Dawson Do").width);
 
-    const CW = h1.offsetWidth;
-    const CH = h1.offsetHeight;
+    const start = performance.now();
+    const DUR = 3400;
+    let raf: number;
+    const trail: [number, number][] = [];
 
-    if (CW === 0 || CH === 0) return;
+    // 80px past the measured text right edge, clamped on-canvas
+    const sideX = Math.min(textW + 80, W - 20);
+    const sideY = H / 2 - 8;
 
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = CW * dpr;
-    canvas.height = CH * dpr;
-    canvas.style.width = `${CW}px`;
-    canvas.style.height = `${CH}px`;
-    ctx.scale(dpr, dpr);
-
-    // Glint geometry anchored to the measured text
-    const TX1 = Math.min(textW, CW - 4);     // text right edge
-    const restX = Math.min(TX1 + 14, CW - 8); // rest position just past name end
-    const restY = CH * 0.5;
-    const SIZE = Math.max(4, CH * 0.065);      // proportional star radius
-
-    const trail: Array<{ x: number; y: number }> = [];
-    let startTime: number | null = null;
-
-    function draw(now: number) {
-      if (!startTime) startTime = now;
-      const t = Math.min((now - startTime) / TOTAL_MS, 1.0);
-
-      ctx.clearRect(0, 0, CW, CH);
-
-      let gx: number;
-      let gy: number;
-      let alpha = 1;
-
-      if (t < P1) {
-        // Phase 1 — corkscrew diagonal: BL → TR, coil tightens as it crosses
-        const pt = t / P1;
-        const ex = easeOut(pt);
-        gx = ex * TX1;
-        gy = CH - ex * CH * 0.85;
-        const amp = (1 - pt) * CH * 0.28;
-        gy += Math.sin(pt * Math.PI * 2 * 3.5) * amp;
-
-      } else if (t < P2) {
-        // Phase 2 — drift to rest position, ease to stop
-        const pt = (t - P1) / (P2 - P1);
-        const ex = easeOut(pt);
-        const startX = TX1;
-        const startY = CH * 0.15;
-        gx = startX + ex * (restX - startX);
-        gy = startY + ex * (restY - startY);
-
-      } else if (t < P3) {
-        // Phase 3 — gentle vertical bob in place
-        const pt = (t - P2) / (P3 - P2);
-        gx = restX;
-        gy = restY + Math.sin(pt * Math.PI * 3) * CH * 0.07;
-
-      } else if (t < P4) {
-        // Phase 4 — shimmer: pulsing star + 8 rotating sparkle rays
-        const pt = (t - P3) / (P4 - P3);
-        gx = restX;
-        gy = restY;
-
-        const rayLen = 8 + Math.abs(Math.sin(pt * Math.PI * 5)) * 10;
-        const innerR = SIZE + 3;
-        ctx.save();
-        ctx.strokeStyle = ACCENT;
-        ctx.lineWidth = 1.2;
-        for (let i = 0; i < 4; i++) {
-          const angle = (i / 4) * Math.PI * 2 + pt * 0.8;
-          ctx.globalAlpha =
-            0.25 + 0.25 * Math.abs(Math.sin(pt * Math.PI * 4 + i));
-          ctx.beginPath();
-          ctx.moveTo(
-            gx + Math.cos(angle) * innerR,
-            gy + Math.sin(angle) * innerR,
-          );
-          ctx.lineTo(
-            gx + Math.cos(angle) * (innerR + rayLen),
-            gy + Math.sin(angle) * (innerR + rayLen),
-          );
-          ctx.stroke();
-        }
-        ctx.restore();
-        ctx.globalAlpha = 1;
-
+    function pos(p: number): [number, number] {
+      if (p < 0.34) {
+        // diagonal corkscrew across the name
+        const u = p / 0.34;
+        const baseX = 40 + u * (W - 80); // left → right across full width
+        const baseY = H - 18 - u * (H - 36); // bottom → top (diagonal)
+        const coil = Math.sin(u * Math.PI * 4) * (14 * (1 - u * 0.4)); // tightening coil
+        const coilY = Math.cos(u * Math.PI * 4) * (9 * (1 - u * 0.4));
+        return [baseX + coil, baseY + coilY];
+      } else if (p < 0.52) {
+        // drift off to the side, easing to rest
+        const u = (p - 0.34) / 0.18;
+        const e = u * u * (3 - 2 * u);
+        const fromX = W - 40, fromY = 18;
+        return [fromX + e * (sideX - fromX), fromY + e * (sideY - fromY)];
+      } else if (p < 0.7) {
+        // hover: hold, gentle bob
+        const u = (p - 0.52) / 0.18;
+        return [sideX, sideY + Math.sin(u * Math.PI * 2) * 3];
+      } else if (p < 0.84) {
+        // shimmer: stay put (pulse handled below)
+        return [sideX, sideY];
       } else {
-        // Phase 5 — accelerate up-right and fade out
-        const pt = (t - P4) / (1 - P4);
-        const ex = easeIn(pt);
-        gx = restX + ex * CW * 0.55;
-        gy = restY - ex * CH * 2.5;
-        alpha = 1 - pt;
-      }
-
-      // Fade trail
-      trail.push({ x: gx, y: gy });
-      if (trail.length > 12) trail.shift();
-
-      for (let i = 0; i < trail.length; i++) {
-        const tf = i / trail.length;
-        const p = trail[i];
-        ctx.globalAlpha = tf * tf * 0.3 * alpha;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, SIZE * 0.45 * tf, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${ACCENT_RGB}, 1)`;
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-
-      // Glow + star
-      if (alpha > 0.01) {
-        const glowR = SIZE * 2.8;
-        const grd = ctx.createRadialGradient(gx, gy, 0, gx, gy, glowR);
-        grd.addColorStop(0, `rgba(${ACCENT_RGB}, 0.2)`);
-        grd.addColorStop(1, `rgba(${ACCENT_RGB}, 0)`);
-
-        ctx.globalAlpha = alpha * 0.3;
-        ctx.beginPath();
-        ctx.arc(gx, gy, glowR, 0, Math.PI * 2);
-        ctx.fillStyle = grd;
-        ctx.fill();
-
-        ctx.globalAlpha = alpha;
-        drawStar(ctx, gx, gy, SIZE);
-        ctx.fillStyle = ACCENT;
-        ctx.fill();
-
-        ctx.globalAlpha = 1;
-      }
-
-      if (t < 1) {
-        rafRef.current = requestAnimationFrame(draw);
+        // fly away up-right
+        const u = (p - 0.84) / 0.16;
+        return [sideX + u * u * 220, sideY - u * u * 160];
       }
     }
 
-    rafRef.current = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(rafRef.current);
+    function glint(x: number, y: number, s: number, rot: number, a: number) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.beginPath();
+      for (let i = 0; i < 4; i++) {
+        ctx.rotate(Math.PI / 2);
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(s * 0.18, s * 0.18, s, 0);
+        ctx.quadraticCurveTo(s * 0.18, -s * 0.18, 0, 0);
+      }
+      ctx.fillStyle = `rgba(178,208,255,${a})`;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - start) / DUR);
+      ctx.clearRect(0, 0, W, H);
+      const [px, py] = pos(p);
+
+      // trail
+      trail.push([px, py]);
+      if (trail.length > 22) trail.shift();
+      trail.forEach(([x, y], i) => {
+        const al = i / trail.length;
+        ctx.beginPath();
+        ctx.arc(x, y, 1.5 * al + 0.3, 0, 7);
+        ctx.fillStyle = `rgba(91,141,239,${al * 0.65})`;
+        ctx.fill();
+      });
+
+      let s = 5, a = 0.95;
+
+      // shimmer beat: pulse + sparkle rays
+      if (p >= 0.7 && p < 0.84) {
+        const u = (p - 0.7) / 0.14;
+        const pulse = Math.sin(u * Math.PI);
+        s = 5 + pulse * 5;
+        ctx.beginPath();
+        ctx.arc(px, py, s * 2.4 * pulse, 0, 7);
+        ctx.fillStyle = `rgba(178,208,255,${0.18 * pulse})`;
+        ctx.fill();
+        ctx.strokeStyle = `rgba(178,208,255,${0.5 * pulse})`;
+        ctx.lineWidth = 1;
+        for (let k = 0; k < 4; k++) {
+          const ang = (k / 4) * Math.PI * 2 + u * 1.5;
+          ctx.beginPath();
+          ctx.moveTo(px + Math.cos(ang) * 7, py + Math.sin(ang) * 7);
+          ctx.lineTo(
+            px + Math.cos(ang) * (10 + pulse * 6),
+            py + Math.sin(ang) * (10 + pulse * 6),
+          );
+          ctx.stroke();
+        }
+      }
+
+      if (p > 0.84) a = 1 - (p - 0.84) / 0.16;
+      glint(px, py, s, p * 7, a);
+
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
   }, [nameRef]);
 
   // Hook-based check handles SSR and dynamic preference changes
