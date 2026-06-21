@@ -95,7 +95,7 @@ function StatusPill() {
         <span className="status-dot-ping absolute inset-0 rounded-full bg-success" />
         <span className="status-dot-core relative inline-block h-[9px] w-[9px] rounded-full bg-success" />
       </span>
-      <span>Available for Summer 2026 internships</span>
+      <span>Available for internships</span>
     </span>
   );
 }
