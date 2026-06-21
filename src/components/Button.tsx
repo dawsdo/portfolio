@@ -14,7 +14,7 @@ const BASE =
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    "bg-primary text-ink hover:bg-primary-hover active:bg-primary-focus",
+    "bg-primary text-white hover:bg-primary-hover active:bg-primary-focus",
   secondary:
     "border border-hairline bg-surface-1 text-ink hover:bg-surface-2 active:bg-[#050507]",
 };
