@@ -58,26 +58,35 @@ export default function FeedbackWidget() {
     setState("idle");
   };
 
-  // Watch for user scrolling past the #work section
+  // Watch for user scrolling past the #work section; fall back to 60% page scroll on pages without it
   useEffect(() => {
     if (isExcluded || getDismissed()) return;
 
     const workEl = document.getElementById("work");
-    if (!workEl) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // Section has scrolled above the viewport
-        if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
-          setEligible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0 }
-    );
+    if (workEl) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+            setEligible(true);
+            observer.disconnect();
+          }
+        },
+        { threshold: 0 }
+      );
+      observer.observe(workEl);
+      return () => observer.disconnect();
+    }
 
-    observer.observe(workEl);
-    return () => observer.disconnect();
+    const handleScroll = () => {
+      const total = document.body.scrollHeight - window.innerHeight;
+      if (total > 0 && window.scrollY / total > 0.6) {
+        setEligible(true);
+        window.removeEventListener("scroll", handleScroll);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [isExcluded, pathname]);
 
   // Show widget 2 seconds after becoming eligible

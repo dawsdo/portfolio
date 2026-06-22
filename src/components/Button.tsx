@@ -1,8 +1,10 @@
+import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
 
 type Variant = "primary" | "secondary";
 
-type ButtonProps = ComponentPropsWithoutRef<"a"> & {
+type ButtonProps = Omit<ComponentPropsWithoutRef<"a">, "href"> & {
+  href: string;
   variant?: Variant;
 };
 
@@ -22,8 +24,9 @@ const VARIANTS: Record<Variant, string> = {
 export default function Button({
   variant = "primary",
   className = "",
+  href,
   ...rest
 }: ButtonProps) {
   const merged = `${BASE} ${VARIANTS[variant]}${className ? ` ${className}` : ""}`;
-  return <a className={merged} {...rest} />;
+  return <Link href={href} className={merged} {...rest} />;
 }
