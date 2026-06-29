@@ -141,7 +141,7 @@ export default function Hero() {
             ref={nameRef}
             initial={initial}
             animate={animate}
-            transition={t(0.05)}
+            transition={t(0.1)}
             className="text-[clamp(2.5rem,8vw,5rem)] font-semibold leading-[1.05] tracking-[-0.04em] text-ink"
           >
             Dawson Do
@@ -152,7 +152,7 @@ export default function Hero() {
         <motion.p
           initial={initial}
           animate={animate}
-          transition={t(0.1)}
+          transition={t(0.15)}
           className="mt-6 max-w-[44ch] text-lg leading-[1.5] tracking-[-0.01em] text-ink-muted"
         >
           A lifetime student, drawn to how systems work under the hood.
@@ -162,7 +162,7 @@ export default function Hero() {
         <motion.div
           initial={initial}
           animate={animate}
-          transition={t(0.15)}
+          transition={t(0.2)}
           className="mt-10 flex flex-wrap items-center gap-3"
         >
           <Magnetic>

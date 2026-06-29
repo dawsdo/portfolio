@@ -205,7 +205,7 @@ export default function SelectedWork({ projects }: Props) {
               initial={initial}
               whileInView={inView}
               viewport={viewport}
-              transition={t(0.08 + i * 0.1)}
+              transition={t(0.05 + i * 0.05)}
               className="grid gap-6 rounded-lg border border-hairline bg-surface-1 p-6 transition duration-200 ease-linear-out hover:border-hairline-strong hover:bg-surface-2 motion-safe:hover:-translate-y-1 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10 lg:p-10"
             >
               <div className="flex flex-col gap-6">

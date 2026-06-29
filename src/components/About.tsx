@@ -46,7 +46,7 @@ export default function About() {
           initial={initial}
           whileInView={inView}
           viewport={viewport}
-          transition={t(0)}
+          transition={t(0.05)}
           className="relative aspect-square w-full max-w-[360px] overflow-hidden rounded-xl border border-hairline"
         >
           <Image
@@ -65,7 +65,7 @@ export default function About() {
               initial={initial}
               whileInView={inView}
               viewport={viewport}
-              transition={t(0.08 * (i + 1))}
+              transition={t(0.05 * (i + 1))}
               className="text-lg leading-[1.5] tracking-[-0.01em] text-ink"
             >
               {paragraph}
